@@ -11,8 +11,14 @@ from app.log import logger
 from app.service.mail_providers._base import (
     MailServiceProvider as BaseMailServiceProvider,
 )
-
 from mailersend import EmailBuilder, MailerSendClient
+
+from pydantic import BaseModel
+
+
+class _LegacyMailerSendSettings(BaseModel):
+    mailersend_api_key: str = ""
+    mailersend_from_email: str = ""
 
 
 class MailerSendProvider(BaseMailServiceProvider):
@@ -29,7 +35,10 @@ class MailerSendProvider(BaseMailServiceProvider):
             **kwargs: Additional configuration options (unused, config loaded from plugin config).
         """
         super().__init__(**kwargs)
-        self.api_key = api_key
+        legacy_setting = _LegacyMailerSendSettings.model_validate(settings.model_dump())
+
+        self.api_key = api_key or legacy_setting.mailersend_api_key
+        self.from_email = settings.from_email or legacy_setting.mailersend_from_email
         self._client: MailerSendClient | None = None
 
     async def init(self) -> None:
@@ -69,7 +78,7 @@ class MailerSendProvider(BaseMailServiceProvider):
             # Build email
             email_builder = EmailBuilder()
             email_builder.to_many([{"email": to_email}])
-            email_builder.from_email(settings.from_email, settings.from_name)
+            email_builder.from_email(self.from_email, settings.from_name)
             email_builder.subject(subject)
 
             # Prefer HTML content, otherwise use plain text
