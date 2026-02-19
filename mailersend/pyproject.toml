@@ -1,0 +1,9 @@
+[project]
+name = "g0v0-plugin-mailersend-provider"
+version = "0.1.0"
+description = "A mail service provider plugin that sends emails using the MailerSend API."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "mailersend>=1.0.0",
+]
