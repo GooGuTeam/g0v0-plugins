@@ -1,0 +1,19 @@
+version = 1
+revision = 3
+requires-python = ">=3.12"
+
+[[package]]
+name = "g0v0-plugin-beatmap-policy"
+version = "0.1.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "osupyparser" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "osupyparser", git = "https://github.com/MingxuanGame/osupyparser.git" }]
+
+[[package]]
+name = "osupyparser"
+version = "1.0.8"
+source = { git = "https://github.com/MingxuanGame/osupyparser.git#f55794b775f61d8f0ea2f6bbc54a03436235df15" }

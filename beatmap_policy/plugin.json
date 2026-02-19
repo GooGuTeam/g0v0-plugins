@@ -1,0 +1,7 @@
+{
+  "id": "beatmap_policy",
+  "name": "Beatmap Policy",
+  "description": "A plugin that supports beatmap ranking policies and management. (allowlist, blacklist, etc.)",
+  "version": "0.1.0",
+  "author": "GooGuTeam"
+}
