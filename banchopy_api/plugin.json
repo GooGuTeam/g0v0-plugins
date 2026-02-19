@@ -1,0 +1,7 @@
+{
+  "id": "banchopy_api",
+  "name": "bancho.py API",
+  "description": "A plugin that provides APIs from bancho.py, which is a popular osu!(stable) server implementation.",
+  "version": "0.1.0",
+  "author": "GooGuTeam"
+}
