@@ -1,5 +1,5 @@
 {
-  "id": "mailersendr",
+  "id": "mailersend",
   "name": "MailerSend Mail Provider",
   "description": "A mail service provider plugin that sends emails using the MailerSend API.",
   "version": "0.1.0",
