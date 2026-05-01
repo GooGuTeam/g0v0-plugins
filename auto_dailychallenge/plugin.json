@@ -1,0 +1,7 @@
+{
+  "id": "auto_dailychallenge",
+  "name": "Auto Daily Challenge",
+  "description": "A plugin that automatically selects and sets a beatmap for the daily challenge each day.",
+  "version": "0.1.0",
+  "author": "GooGuTeam"
+}
