@@ -3,7 +3,7 @@
 from datetime import timedelta
 
 from app.database import Beatmap
-from app.dependencies.database import get_redis
+from app.dependencies.database import get_redis, with_db
 from app.dependencies.scheduler import get_scheduler
 from app.helpers import utcnow
 from app.log import log
@@ -80,7 +80,7 @@ async def prepare_tomorrow_challenge() -> None:
         return
 
     try:
-        async with AsyncSession() as session:
+        async with with_db() as session:
             beatmap = await determine_next_challenge_beatmap(session)
 
         logger.info(
