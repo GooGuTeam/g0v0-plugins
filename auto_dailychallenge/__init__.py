@@ -46,7 +46,7 @@ async def determine_next_challenge_beatmap(session: AsyncSession) -> Beatmap:
     """
     today = utcnow().date()
     weekday = today.weekday()
-    day_diff = weekday + 4 if weekday < START_WEEKDAY else weekday - START_WEEKDAY
+    day_diff = (weekday - START_WEEKDAY) % 7
     star_rating_left_limit = START_RATING + day_diff * STAR_RATING_DIFF
     star_rating_right_limit = star_rating_left_limit + STAR_RATING_DIFF
 
@@ -85,7 +85,7 @@ async def prepare_tomorrow_challenge() -> None:
 
         logger.info(
             f"Tomorrow's daily challenge beatmap: {beatmap.beatmapset.artist} - {beatmap.beatmapset.title} "
-            f"[{beatmap.version}] ({beatmap.id})"
+            f"[{beatmap.version}] sr: {beatmap.difficulty_rating} ({beatmap.id})"
         )
 
         redis = get_redis()
