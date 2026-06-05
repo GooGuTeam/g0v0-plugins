@@ -1,6 +1,7 @@
 """Auto fill daily challenge from ranked beatmaps."""
 
 from datetime import timedelta
+import random
 
 from app.database import Beatmap
 from app.dependencies.database import get_redis, with_db
@@ -9,7 +10,7 @@ from app.helpers import utcnow
 from app.log import log
 from app.models.beatmap import BeatmapRankStatus
 
-from sqlmodel import select, text
+from sqlmodel import func, select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 # https://osu.ppy.sh/wiki/Gameplay/Daily_challenge#beatmap-difficulty-range
@@ -50,6 +51,19 @@ async def determine_next_challenge_beatmap(session: AsyncSession) -> Beatmap:
     star_rating_left_limit = START_RATING + day_diff * STAR_RATING_DIFF
     star_rating_right_limit = star_rating_left_limit + STAR_RATING_DIFF
 
+    count = (
+        await session.exec(
+            select(func.count()).where(
+                Beatmap.difficulty_rating >= star_rating_left_limit,
+                Beatmap.difficulty_rating <= star_rating_right_limit,
+                Beatmap.beatmap_status == BeatmapRankStatus.RANKED,
+            )
+        )
+    ).first() or 0
+    if count == 0:
+        raise ValueError(
+            f"No ranked beatmaps found in star rating range {star_rating_left_limit} - {star_rating_right_limit}"
+        )
     result = await session.exec(
         select(Beatmap)
         .where(
@@ -57,7 +71,7 @@ async def determine_next_challenge_beatmap(session: AsyncSession) -> Beatmap:
             Beatmap.difficulty_rating <= star_rating_right_limit,
             Beatmap.beatmap_status == BeatmapRankStatus.RANKED,
         )
-        .order_by(text("RAND()"))
+        .offset(random.randint(0, count - 1))
         .limit(1)
     )
     beatmaps_in_range = result.first()
