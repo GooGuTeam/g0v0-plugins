@@ -105,10 +105,8 @@ async def prepare_tomorrow_challenge() -> None:
         redis = get_redis()
         tomorrow = utcnow().date() + timedelta(days=1)
         key = f"daily_challenge:{tomorrow}"
-        await redis.hset(key, "beatmap", str(beatmap.id))  # pyright: ignore[reportGeneralTypeIssues]
-        await redis.hset(
-            key, "ruleset_id", "0"
-        )  # TODO: Support different rulesets in the future  # pyright: ignore[reportGeneralTypeIssues]
+        await redis.hset(key, "beatmap", str(beatmap.id))
+        await redis.hset(key, "ruleset_id", "0")  # TODO: Support different rulesets in the future
     except Exception as e:
         logger.warning(f"Failed to prepare tomorrow's daily challenge: {e}. Will try again in 5 minutes.")
         get_scheduler().add_job(
