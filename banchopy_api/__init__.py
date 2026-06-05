@@ -22,13 +22,13 @@ from .models import BanchoPyAPIKeys
 from .utils import count_online_users_optimized
 
 from fastapi import Body, Depends, HTTPException, Query, Response
-from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi.responses import JSONResponse
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from fastapi_limiter.depends import RateLimiter
 from pydantic import BaseModel
 from pyrate_limiter import Duration, Limiter, Rate
 from sqlalchemy.orm import joinedload, selectinload
-from sqlmodel import col, exists, select, text, true
+from sqlmodel import col, exists, select, true
 
 logger = log("bancho.py API")
 
