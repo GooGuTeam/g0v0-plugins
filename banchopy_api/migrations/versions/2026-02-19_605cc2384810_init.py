@@ -27,7 +27,7 @@ def upgrade() -> None:
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("name", sqlmodel.sql.sqltypes.AutoString(length=100), nullable=False),
         sa.Column("key", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
-        sa.Column("owner_id", sa.BigInteger(), nullable=True),
+        sa.Column("owner_id", sa.Integer(), nullable=True),
         sa.ForeignKeyConstraint(
             ["owner_id"],
             ["lazer_users.id"],
